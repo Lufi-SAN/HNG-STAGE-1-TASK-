@@ -6,7 +6,7 @@ const { Client } = require("pg")
 const SQL = `
 CREATE TABLE IF NOT EXISTS strings (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
-  string UNIQUE TEXT,
+  string TEXT UNIQUE,
   palindrome BOOLEAN,
   length INTEGER,
   word_count INTEGER
