@@ -1,14 +1,17 @@
-require('dotenv').config()
-const pool = require('./pool')
-const table_name = process.env.TABLE_NAME
+import * as dotenv from 'dotenv';
+dotenv.config();
+import pool from './pool.js';
 
 async function getStringFromDB(string) {
-    const { rows } = await pool.query(`SELECT (string, palindrome, length, word_count) FROM ${table_name} WHERE string = ($1)`, [string])
-    return rows
+    const { rows } = await pool.query(`SELECT string, palindrome, length, word_count FROM strings WHERE string = $1`, [string])
+    console.log(rows[0])
+    return rows[0] ? rows[0].string : []
 }
 
 async function addStringToDB(string, palindrome, length, word_count) {
-    await pool.query(`INSERT INTO ${table_name} (string, palindrome, length, word_count) VALUES ($1, $2, $3, $4)`, [string, palindrome, length, word_count])
+    const {rows} = await pool.query(`INSERT INTO strings (string,palindrome,length,word_count) VALUES ($1, $2, $3, $4)`, [string, palindrome, length, word_count])
+    console.log(rows)
+    return
 }
 
 async function getFilteredStrings(filters) {
@@ -40,7 +43,7 @@ async function getFilteredStrings(filters) {
         whereClauses.push(`string ILIKE $${values.length}`);
     }
 
-    let queryText = `SELECT * FROM ${table_name}`;
+    let queryText = `SELECT * FROM strings`;
     if (whereClauses.length > 0) {
         queryText += ' WHERE ' + whereClauses.join(' AND ');
     }
@@ -50,7 +53,7 @@ async function getFilteredStrings(filters) {
 }
 
 async function filterNatural(query) {
-    let queryText = `SELECT * FROM ${table_name} WHERE`;
+    let queryText = `SELECT * FROM strings WHERE`;
     switch(query) {
         case 'all single word palindromic strings':
             queryText + 'word_count = 1 AND palindrome = true'
@@ -71,14 +74,16 @@ async function filterNatural(query) {
 }
 
 async function deleteString(string) {
-    await pool.query(`DELETE FROM ${table_name} WHERE string = $1`, [string])
+    await pool.query(`DELETE FROM strings WHERE string = $1`, [string])
 }
 
 
-module.exports = {
+const db = {
     getStringFromDB,
     addStringToDB,
     getFilteredStrings,
     filterNatural,
     deleteString
 }
+
+export default db;

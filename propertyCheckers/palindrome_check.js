@@ -1,5 +1,5 @@
-function pc(string) {
+function palindrome_check(string) {
     return string.replace(/[^a-z0-9]/ig, '').toLowerCase() == string.replace(/[^a-z0-9]/ig, '').toLowerCase().split("").reverse().join("")
 }
 
-module.exports = pc
+export default palindrome_check

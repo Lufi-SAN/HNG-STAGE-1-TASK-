@@ -1,17 +1,17 @@
-const palindrome_check = require('./palindrome_check')
-const unique_characters = require('./unique_characters_check')
-const word_count = require('./word_count')
-const sha256_hash = require('./createSHA')
-const character_frequency_map = require('./character_frequency_map')
-const length = require('./length');
+import palindrome_check from './palindrome_check.js'
+import unique_charactersF from './unique_characters_check.js'
+import word_countF from './word_count.js'
+import sha256_hashF from './createSHA.js'
+import character_frequency_mapF from './character_frequency_map.js'
+import lengthF from './length.js'
 
 function pce(value) {
-    const length = length(value);
+    const length = lengthF(value);
     const is_palindrome = palindrome_check(value)
-    const unique_characters = unique_characters(value)
-    const word_count = word_count(value)
-    const sha256_hash = sha256_hash(value)
-    const character_frequency_map = character_frequency_map(value)
+    const unique_characters = unique_charactersF(value)
+    const word_count = word_countF(value)
+    const sha256_hash = sha256_hashF(value)
+    const character_frequency_map = character_frequency_mapF(value)
 
     return {
             length,
@@ -24,7 +24,8 @@ function pce(value) {
 }
 
 function sha_hash(value) {
-    return sha256_hash(value)
+    return sha256_hashF(value)
 }
 
-module.exports = {pce, sha_hash}
+const propCheck = {pce, sha_hash}
+export default propCheck

@@ -1,5 +1,5 @@
-function ucc(string) {
+function unique_charactersF(string) {
     return Array.from(new Set(string.trim().split(" ").join(""))).length
 }
 
-module.exports = ucc
+export default unique_charactersF

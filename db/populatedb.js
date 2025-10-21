@@ -1,5 +1,6 @@
-require('dotenv').config()
-const { Client } = require("pg")
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { Client } from 'pg';
 
 const SQL = `
 CREATE TABLE IF NOT EXISTS strings (

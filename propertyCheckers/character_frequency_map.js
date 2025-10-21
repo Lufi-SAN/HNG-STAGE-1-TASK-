@@ -1,4 +1,4 @@
-function cfa(string) {
+function character_frequency_mapF(string) {
     const alteredvalue = string.replace(/[^a-z0-9]/ig, '')
     const storageArr = Array.from(alteredvalue)
     const initSet = new Set(alteredvalue)
@@ -17,4 +17,4 @@ function cfa(string) {
     return initObj
 }
 
-module.exports = cfa;
+export default character_frequency_mapF;

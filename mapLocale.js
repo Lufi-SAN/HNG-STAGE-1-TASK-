@@ -24,4 +24,4 @@ const mapLocales = {
   ibo: "ig-NG"
 };
 
-module.exports = mapLocales
+export default mapLocales;

@@ -1,14 +1,14 @@
-const express = require('express');
+import express from 'express'
 const app = express();
 const port = process.env.PORT || 3000;
-const stringRouter = require('./routes/strings')
+import stringRouter from './routes/strings.js'
 
 app.use(express.json());
 
 app.use('/strings', stringRouter ); 
 
 app.use((err, req, res, next) => {
-    res.status(500)
+    res.status(500).json({ error: err.message });   
 })
 
 app.listen(port, () => {

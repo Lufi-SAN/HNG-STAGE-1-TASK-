@@ -1,12 +1,12 @@
-const { Router } = require("express")
-const propCheck = require('../propertyCheckers/propCheckersexport')
-const db = require('../db/queries')
-const mapNL = require('../mapNL')
+import { Router } from 'express'
+import propCheck from '../propertyCheckers/propCheckersexport.js'
+import db from '../db/queries.js'
+import mapNL from '../mapNL.js'
 
 const stringsRouter = Router()
 
 
-stringsRouter.post('/', async (req, res, next) => {
+stringsRouter.post('/', async(req, res, next) => {
     //check if req.body object has value property
     if (!req.body || !req.body.hasOwnProperty('value')) {
         return res.status(400).json({
@@ -24,18 +24,15 @@ stringsRouter.post('/', async (req, res, next) => {
         })
     }
     //query database
-    try {
+    
         const DBString =  await db.getStringFromDB(value)
-        if (DBString.length > 0) {
+        if (typeof DBString == 'string') {
             return res.status(409).json({
                 error: 'Conflict',
                 message: 'String already exists in the system' 
             })
         }
-    } catch (err) {
-        next(err)
-        return
-    }
+    
     
     const propObject = propCheck.pce(value)
     const id = propCheck.sha_hash(value)
@@ -48,8 +45,8 @@ stringsRouter.post('/', async (req, res, next) => {
     )
 
     res.status(201).json({
-        id,
-        value,
+        id: id,
+        value: value,
         properties : propObject,
         created_at : new Date(Date.now()).toISOString()
     });
@@ -58,19 +55,15 @@ stringsRouter.post('/', async (req, res, next) => {
 stringsRouter.get('/:string_value', async(req, res, next) => {
     //Access db for string value
     const string_value = req.params.string_value;
-    try {
-        const DBString = await db.getStringFromDB(string_value)
-        if (DBString.length === 0) {
-            return res.status(404).json({
-                error: 'Not Found',
-                message: 'String does not exist in the system'
-            })
-        }
-    } catch (err) {
-        next(err)
-        return
+    
+    const DBString = await db.getStringFromDB(string_value)
+    if (typeof DBString != 'string') {
+        return res.status(404).json({
+            error: 'Not Found',
+            message: 'String does not exist in the system'
+        })
     }
-
+    
     res.status(200).json({
         id: propCheck.sha_hash(string_value),
         value: string_value,
@@ -83,15 +76,24 @@ stringsRouter.get('/', async (req, res) => {
     const acceptedQueryParams = ['is_palindrome','min_length','max_length','word_count','contains_character']
     for(let key in req.query ) {
         if (!acceptedQueryParams.includes(key)) {
-            res.status(400).json({
+            return res.status(400).json({
                 error: "Bad Request",
                 message: "Invalid query parameter values or types"
             })
         }
     }
     const query = req.query
+    for(let key in query ) {
+        if ( query[key] == '' || query[key] == null || query[key] == undefined ) {
+            return res.status(400).json({
+                error: "Bad Request",
+                message: "Invalid query parameter values or types"
+            })
+        }
+    }
 
     const filteredStrings = await db.getFilteredStrings(query)
+    console.log(filteredStrings)
     const data = filteredStrings.map((entry) => ({
         id: propCheck.sha_hash(entry.string),
         value: entry.string,
@@ -139,15 +141,16 @@ stringsRouter.get('/filter-by-natural-language', async (req, res) => {
 })
 
 stringsRouter.delete('/:string_value', async (req, res) => {
+    const value = req.params.string_value;
     const DBString =  await db.getStringFromDB(value)
-    if (DBString.length === 0) {
+    if (typeof DBString != 'string') {
         return res.status(404).json({
             error: 'Not found',
             message: 'String does not exist in the system' 
         })
     }
-    await db.deleteString(req.params.string_value)
-    return res.status(204)
+    await db.deleteString(value)
+    res.status(204).json({})
 })
 
-module.exports = stringsRouter
+export default stringsRouter

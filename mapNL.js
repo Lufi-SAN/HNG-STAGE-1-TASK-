@@ -5,4 +5,4 @@ const mapNL = {
   'strings containing the letter z' : {'contains_character' : 'z'}
 }
 
-module.exports = mapNL
+export default mapNL;

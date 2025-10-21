@@ -1,7 +1,7 @@
-const crypto = require('crypto')
+import crypto from 'crypto'
 
-function createHash(string) {
+function sha256_hashF(string) {
     return crypto.createHash("sha256").update(string).digest("hex")
 }
 
-module.exports = createHash
+export default sha256_hashF

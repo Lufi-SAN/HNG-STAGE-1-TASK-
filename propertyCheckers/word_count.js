@@ -1,5 +1,5 @@
-function wc(string) {
-    return Number(string.trim().split(" ").length)  
+function word_countF(string) {
+    return ( string.trim().split(" ").length )
 } 
 
-module.exports = wc
+export default word_countF

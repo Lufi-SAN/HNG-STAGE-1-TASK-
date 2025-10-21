@@ -1,5 +1,5 @@
-const franc = require('franc')
-const mapToLocale = require('../mapLocale')
+import {franc} from 'franc'
+import mapToLocale from '../mapLocale.js'
 
 function detectLocaleFromString(value) {
     const francCode = franc(value)
@@ -7,10 +7,10 @@ function detectLocaleFromString(value) {
     return locale
 }
 
-function length(string) {
+function lengthF(string) {
     const locale = detectLocaleFromString(string)
     const stringSegmenter = new Intl.Segmenter(locale, {  granularity: 'grapheme' }).segment(string)
-    return Number([...stringSegmenter].length)
+    return [...stringSegmenter].length
 }
 
-module.exports = length
+export default lengthF
