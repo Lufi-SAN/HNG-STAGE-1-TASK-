@@ -1,4 +1,4 @@
-const characterFrequencyMap = require('./propertyCheckers/character_frequency_map');
+const character_frequency_map = require('./propertyCheckers/character_frequency_map');
 const palindrome_check = require('./propertyCheckers/palindrome_check')
 const unique_characters = require('./propertyCheckers/unique_characters_check')
 const word_count = require('./propertyCheckers/word_count')
