@@ -10,7 +10,7 @@ function detectLocaleFromString(value) {
 function length(string) {
     const locale = detectLocaleFromString(string)
     const stringSegmenter = new Intl.Segmenter(locale, {  granularity: 'grapheme' }).segment(string)
-    return [...stringSegmenter].length
+    return Number([...stringSegmenter].length)
 }
 
 module.exports = length
