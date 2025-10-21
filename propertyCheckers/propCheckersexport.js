@@ -1,4 +1,4 @@
-const character_frequency_map = require('./propertyCheckers/character_frequency_map');
+const characterFrequencyMap = require('./propertyCheckers/character_frequency_map');
 const palindrome_check = require('./propertyCheckers/palindrome_check')
 const unique_characters = require('./propertyCheckers/unique_characters_check')
 const word_count = require('./propertyCheckers/word_count')
@@ -12,7 +12,7 @@ function pce(value) {
     const unique_characters = unique_characters(value)
     const word_count = word_count(value)
     const sha256_hash = sha256_hash(value)
-    const character_frequency_map = character_frequency_map(value)
+    const character_frequency_map = characterFrequencyMap(value)
 
     return {
             length: entry.length,
