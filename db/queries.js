@@ -17,7 +17,7 @@ async function getFilteredStrings(filters) {
 
     if (filters.is_palindrome !== undefined) {
         values.push(filters.is_palindrome === 'true');
-        whereClauses.push(`is_palindrome = $${values.length}`);
+        whereClauses.push(`palindrome = $${values.length}`);
     }
 
     if (filters.min_length !== undefined) {
@@ -53,13 +53,13 @@ async function filterNatural(query) {
     let queryText = `SELECT * FROM ${table_name} WHERE`;
     switch(query) {
         case 'all single word palindromic strings':
-            queryText + 'word_count = 1 AND is_palindrome = true'
+            queryText + 'word_count = 1 AND palindrome = true'
             break;
         case 'strings longer than 10 characters':
             queryText + 'length > 10'
             break;
         case 'palindromic strings that contain the first_vowel':
-            queryText + 'is_palindrome = true AND string ILIKE %a%'
+            queryText + 'palindrome = true AND string ILIKE %a%'
             break;
         case 'strings containing the letter z':
             queryText + 'string ILIKE %z%'
